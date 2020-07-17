@@ -1,18 +1,82 @@
-# Adding Data Persistence Sprint Challenge
+# Sprint Challenge: Node DB Sprint
+
+## Description
+
+In this challenge, you design and build a Data Model and a RESTful API that stores data into a Relational Database.
+
+## Instructions
 
 **Read these instructions carefully. Understand exactly what is expected _before_ starting this Sprint Challenge.**
 
-This challenge allows you to practice the concepts and techniques learned over the past sprint and apply them in a concrete project. This sprint explored **Data Persistence**. During this sprint, you studied **RDBMS, including SQL, multi-table queries, and data modeling**. In your challenge this week, you will demonstrate your mastery of these skills by creating **a database based on given specifications**.
+This is an individual assessment, please work on it alone. It is an opportunity to demonstrate proficiency in the concepts and objectives introduced and practiced in preceding days.
 
-This is an individual assessment. All work must be your own. Your challenge score is a measure of your ability to work independently using the material covered through this sprint. You need to demonstrate proficiency in the concepts and objectives introduced and practiced in preceding days.
+If the instructions are not clear, please seek support from your TL and Instructor on Slack.
 
-You are not allowed to collaborate during the sprint challenge. However, you are encouraged to follow the twenty-minute rule and seek support from your TL if you need direction.
+The Minimum Viable Product must be completed in three hours.
 
-_You have **three hours** to complete this challenge. Plan your time accordingly._
+Follow these steps to set up and work on your project:
 
-## Introduction
+- [ ] Create a forked copy of this project.
+- [ ] Add your _Team Lead_ as collaborator on Github.
+- [ ] Clone your forked version of the Repository.
+- [ ] Create a new Branch on the clone: git checkout -b `firstName-lastName`.
+- [ ] Implement the project on this Branch, committing changes regularly.
+- [ ] Push commits: git push origin `firstName-lastName`.
 
-In this project you will be given a set of requirements and must design a database to satisfy them. As a part of this process you'll also build an API with endpoints to access the data.
+Follow these steps for completing your project.
+
+- [ ] Submit a Pull-Request to merge `firstName-lastName` Branch into master on **your fork, don't make Pull Requests against Lambda's repository**.
+- [ ] Please don't merge your own pull request.
+- [ ] Add your _Team Lead_ as a Reviewer on the Pull-request
+- [ ] Your _Team Lead_ will count the challenge as done by merging the branch into _master_.
+
+## Commits
+
+Commit your code regularly and use descriptive messages. This helps both you (in case you ever need to return to old code) and your Team Lead.
+
+## Self-Study/Essay Questions
+
+Demonstrate your understanding of this week's concepts by answering the following free-form questions. Edit this document to include your answers after each question. Make sure to leave a blank line above and below your answer so it is clear and easy to read by your project manager.
+
+- [ ] Explain the difference between `Relational Databases` and `SQL`.
+
+A type of database to handle relationships between tables, SQL is a language used to query a database
+
+- [ ] Why do tables need a `primary key`?
+
+An identifier to sort through your data
+
+- [ ] What is the name given to a table column that references the primary key on another table.
+
+Foreign Key
+
+- [ ] What do we need in order to have a _many to many_ relationship between two tables.
+
+intermediary table
+
+## Minimum Viable Product
+
+Take the steps necessary to complete the project from scratch. Start by initializing your project with a `package.json` and go from there.
+
+Complete the following tasks:
+
+- [ ] Design the data model and use _knex migrations_ to create the database and tables needed to satisfy the following business rules:
+  - [ ] a `project` can have multiple `tasks`.
+  - [ ] a `task` belongs to only one `project`.
+  - [ ] a `project` can use multiple `resources`. Example of `resources` are: computer, conference room, microphone, delivery van.
+  - [ ] the same `resource` can be used in multiple `projects`.
+  - [ ] when adding `projects` the client must provide a name, the description is optional.
+  - [ ] when adding `resources` the client must provide a name, the description is optional.
+  - [ ] when adding a `task` the client must provide a description, the notes are optional.
+  - [ ] when adding a `task` the client must provide the `id` of an existing project.
+  - [ ] for `projects` and `tasks` if no value is provided for the `completed` property, the API should provide a default value of `false`.
+- [ ] Build an API with endpoints for:
+  - [ ] adding resources.
+  - [ ] retrieving a list of resources.
+  - [ ] adding projects.
+  - [ ] retrieving a list of projects.
+  - [ ] adding tasks.
+  - [ ] retrieving a list of tasks. **The list of tasks should include the project name and project description**.
 
 ### Entities
 
@@ -38,72 +102,55 @@ A `task` one of the steps needed to complete the project. We want to store the f
 - [ ] a notes column to add additional information.
 - [ ] a boolean that indicates if the task has been completed. This column cannot be NULL, the default value should be `false`.
 
-### Commits
+## Stretch Problem
 
-Commit your code regularly and meaningfully. This helps both you (in case you ever need to return to old code for any number of reasons) and your team lead as the evaluate your solution.
+This section is **optional** and not counted towards MVP. Start working on it after you're done with the main assignment.
 
-## Interview Questions
+Add an endpoint for retrieving a `project` by its `id` that returns an object with the following structure:
 
-Be prepared to demonstrate your understanding of this week's concepts by answering questions on the following topics. You might prepare by writing down your own answers before hand.
+```js
+{
+  id: 1,
+  name: 'project name here',
+  description: 'the project description',
+  completed: false, // or true, the database will return 1 for true and 0 for false, extra code is required to convert a 1 to true and a 0 to false.
+  tasks: [
+    {
+      id: 1,
+      description: 'task description',
+      notes: 'the task notes',
+      completed: false // or true
+    },
+    {
+      id: 7,
+      description: 'another task description',
+      notes: 'the task notes',
+      completed: false // or true
+    }
+  ],
+  resources: [
+    {
+      id: 1,
+      name: 'Lambda Student',
+      description: 'a soon to be hired developer'
+    },
+    {
+      id: 2,
+      name: 'MacBook Pro #1'
+      description: 'an overly expensive laptop computer'
+    }
+  ]
+}
+```
 
-1. Explain the difference between `Relational Databases` and `SQL`.
+Add the remaining CRUD operations for projects and tasks.
 
-2. Why do tables need a `primary key`?
+Use `knex` to add _data seeding_ scripts for projects and tasks.
 
-3. What is the name given to a table column that references the primary key on another table.
+Add support for the concept of `contexts`. A context is something like _at home_, _at work_ or _at computer_. The idea is that some tasks require one or more `contexts` in order to be worked on. For example, the task of _file income taxes_ may require that you are _at home_, _at computer_ and _online_ so if you are _at work_ and look at the list of pending tasks you could do in your current context, filing your taxes will not be one of them.
 
-4. What do we need in order to have a _many to many_ relationship between two tables.
+A `context` can be applied to more than one `task`. An task can be tied to more than one context, like in the example above.
 
-You are expected to be able to answer questions in these areas. Your responses contribute to your Sprint Challenge grade.
+When retrieving an `task` by _id_, add a property that lists all the `contexts` related to that task.
 
-## Instructions
-
-### Task 1: Project Set Up
-
-- [ ] Create a forked copy of this project
-- [ ] Add your team lead as collaborator on Github
-- [ ] Clone your OWN version of the repository (Not Lambda's by mistake!)
-- [ ] Create a new branch: git checkout -b `<firstName-lastName>`.
-- [ ] Implement the project on your newly created `<firstName-lastName>` branch, committing changes regularly
-- [ ] Push commits: git push origin `<firstName-lastName>`
-
-### Task 2: Project Requirements
-
-Your finished project must include all of the following requirements:
-
-- [ ] Design the data model and use _knex migrations_ to create the database and tables needed to satisfy the following business rules:
-  - [ ] a `project` can have multiple `tasks`.
-  - [ ] a `task` belongs to only one `project`.
-  - [ ] a `project` can use multiple `resources`. Example of `resources` are: computer, conference room, microphone, delivery van.
-  - [ ] the same `resource` can be used in multiple `projects`.
-  - [ ] when adding `projects` the client must provide a name, the description is optional.
-  - [ ] when adding `resources` the client must provide a name, the description is optional.
-  - [ ] when adding a `task` the client must provide a description, the notes are optional.
-  - [ ] when adding a `task` the client must provide the `id` of an existing project.
-  - [ ] for `projects` and `tasks` if no value is provided for the `completed` property, the API should provide a default value of `false`.
-- [ ] Build an API with endpoints for:
-  - [ ] adding resources.
-  - [ ] retrieving a list of resources.
-  - [ ] adding projects.
-  - [ ] retrieving a list of projects.
-  - [ ] adding tasks.
-  - [ ] retrieving a list of tasks. **The list of tasks should include the project name and project description**.
-
-In your solution, it is essential that you follow best practices and produce clean and professional results. You will be scored on your adherence to proper code style and good organization. Schedule time to review, refine, and assess your work and perform basic professional polishing including spell-checking and grammar-checking on your work. It is better to submit a challenge that meets MVP than one that attempts too much and does not.
-
-### Task 3: Stretch Goals
-
-After finishing your required elements, you can push your work further. These goals may or may not be things you have learned in this module but they build on the material you just studied. Time allowing, stretch your limits and see if you can deliver on the following optional goals:
-
-- [ ] Add an endpoint to get a list of project resources.
-- [ ] Add an endpoint to get a list of project tasks.
-- [ ] Add an endpoint to see all projects using a particular resource.
-- [ ] Add support for assigning `resources` directly to `tasks` in addition to adding them to `projects`
-
-## Submission format
-
-Follow these steps for completing your project.
-
-- [ ] Submit a Pull-Request to merge <firstName-lastName> Branch into master (student's Repo). **Please don't merge your own pull request**
-- [ ] Add your team lead as a reviewer on the pull-request
-- [ ] Your team lead will count the project as complete after receiving your pull-request
+_Good luck and have fun!_
